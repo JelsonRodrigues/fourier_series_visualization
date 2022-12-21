@@ -1,5 +1,5 @@
 use nannou::prelude::*;
-use nannou::winit::event::VirtualKeyCode;
+// use nannou::winit::event::VirtualKeyCode;
 use std::str::FromStr;
 use std::env::args;
 use std::process::exit;
@@ -54,82 +54,8 @@ fn read_file(filename : &str) -> Vec<Item> {
 }
 
 fn model(_app: &App) -> Model {
-    let items: Vec<Item>;
-
-    /* Very beautiful
-    items.push(Item { size : pt2(100.0, 0.0), multiplier : 1.0});
-    items.push(Item { size : pt2(50.0, 0.0), multiplier : 2.0});
-    items.push(Item { size : pt2(25.0, 0.0), multiplier : -4.0});
-    items.push(Item { size : pt2(12.5, 0.0), multiplier : -8.0});
-    */
-
-    /* Line
-    items.push(Item { size : pt2(100.0, 0.0), multiplier : 1.0});
-    items.push(Item { size : pt2(100.0, 0.0), multiplier : -1.0});
-    */
-
-    /* Flor
-    items.push(Item { size : pt2(100.0, 0.0), multiplier : 16.0});
-    items.push(Item { size : pt2(100.0, 0.0), multiplier : -13.0});
-    */
-
-    /* Tres Pétalas
-    items.push(Item { size : pt2(100.0, 0.0), multiplier : 6.0});
-    items.push(Item { size : pt2(100.0, 0.0), multiplier : -3.0});
-    items.push(Item { size : pt2(100.0, 0.0), multiplier : 1.5});
-    */
-
-    /* Fantasma
-    items.push(Item { size : pt2(81.0, 0.0), multiplier : 1.0});
-    items.push(Item { size : pt2(0.0, 64.0), multiplier : 2.0});
-    items.push(Item { size : pt2(49.0, 0.0), multiplier : 1.0});
-    items.push(Item { size : pt2(0.0, 36.0), multiplier : 4.0});
-    items.push(Item { size : pt2(25.0, 0.0), multiplier : 1.0});
-    items.push(Item { size : pt2(0.0, 16.0), multiplier : 8.0});
-    items.push(Item { size : pt2(9.0, 0.0), multiplier : 1.0});
-    items.push(Item { size : pt2(0.0, 4.0), multiplier : 16.0});
-    */
-
-    /* Donut
-    items.push(Item { size : pt2(0.0, 100.0), multiplier : 50.0});
-    items.push(Item { size : pt2(200.0, 0.0), multiplier : 1.0});
-    */
-
-    /* Square Wave
-    let size = 100.0;
-    let speed = 5.0;
-    let n = 6;
-
-    for i in 0..n {
-        let multiplier = (i * 2 + 1) as f32;
-        items.push(Item { size : pt2(size / multiplier, 0.0), multiplier : speed * multiplier});
-    }
-    */
-
-    /* Triangular Wave
-    let size = 120.0;
-    let speed = 5.0;
-    let n = 100;
-
-    for i in 1..=n {
-        let multiplier;
-        if i % 2 == 0 {multiplier = i as f32}
-        else {multiplier = -i as f32}
-        items.push(Item { size : pt2(size / multiplier, 0.0), multiplier : speed * i as f32});
-    }
-    */
-    /* Triangulo de Releux para os valores para o primeiro ponto maior que o segundo, várias pétalas para velocidades mais altas no primeiro
-    items.push(Item { size : pt2(100.0, 0.0), multiplier : 2.0});
-    items.push(Item { size : pt2(200.0,0.0), multiplier : -1.0});
-    */
-
-    // items.push(Item { size : pt2(10.0, 0.0), multiplier : 1.0});
-    // items.push(Item { size : pt2(30.0,0.0), multiplier : -3.0});
-    // items.push(Item { size : pt2(50.0,0.0), multiplier : 5.0});
-    // items.push(Item { size : pt2(70.0,0.0), multiplier : -7.0});
-
     let arguments:Vec<String> = args().collect();
-    items = read_file(&arguments[1]);
+    let items: Vec<Item> = read_file(&arguments[1]);
 
     let points = Vec::new();
     Model {
@@ -153,29 +79,29 @@ fn update(_app: &App, _model: &mut Model, _update: Update) {
 
         if _model.adding {
             /*
-        Como são vetores girando, em algum momento irá começar a repetir o padrão, e quando
-        a figura já tiver sido formada, não é necessário seguir adicionando pontos na curva
-        caso contrário em algum momento acabaria a memória.
-        A forma que eu verifico se todos estão alinhados com a posição inicial é verificando
-        se neste update, todos os vetores estão completando um número inteiro de voltas
-        pegando a rotação que é aplicada neste update "(item.multiplier * time).abs()" e
-        dividindo por 2PI radianos que é o tamanho de uma volta completa
-        Poderia ser feito apenas verificando se após a rotação o ponto resultante é igual ao
-        ponto inicial sem rotação, porém esta forma não é adequada pois algumas figuras podem
-        passar pelo ponto inicial mesmo ainda não tendo completado o ciclo completo
-         */
+            Como são vetores girando, em algum momento irá começar a repetir o padrão, e quando
+            a figura já tiver sido formada, não é necessário seguir adicionando pontos na curva
+            caso contrário em algum momento acabaria a memória.
+            A forma que eu verifico se todos estão alinhados com a posição inicial é verificando
+            se neste update, todos os vetores estão completando um número inteiro de voltas
+            pegando a rotação que é aplicada neste update "(item.multiplier * time).abs()" e
+            dividindo por 2PI radianos que é o tamanho de uma volta completa
+            Poderia ser feito apenas verificando se após a rotação o ponto resultante é igual ao
+            ponto inicial sem rotação, porém esta forma não é adequada pois algumas figuras podem
+            passar pelo ponto inicial mesmo ainda não tendo completado o ciclo completo
+             */
             let num_voltas_abs = (item.multiplier * time).abs() / (2.0 * PI);
 
             /*
-        Como é trabalhado com floats a comparação de 2 valores difícilmente será exata, então
-        eu comparo dois valores aceitando um certo erro, se dois valores diferem pelo máximo
-        o valor que eu especificar, então eu considero eles como iguais
-        O epsilon é o erro máximo permitido, poderia ser um valor fixo tipo 0.00001, mas ao
-        fixar o valor, para valores de rotação muito rápidos o erro é maior do que para
-        valores de rotação mais lentos. Deste modo eu calculo o erro máximo em função
-        da velocidade de rotação, quando a rotação é mais lenta, o erro permitido é menor
-        para rotações rápidas o erro máximo permitido é maior.
-         */
+            Como é trabalhado com floats a comparação de 2 valores difícilmente será exata, então
+            eu comparo dois valores aceitando um certo erro, se dois valores diferem pelo máximo
+            o valor que eu especificar, então eu considero eles como iguais
+            O epsilon é o erro máximo permitido, poderia ser um valor fixo tipo 0.00001, mas ao
+            fixar o valor, para valores de rotação muito rápidos o erro é maior do que para
+            valores de rotação mais lentos. Deste modo eu calculo o erro máximo em função
+            da velocidade de rotação, quando a rotação é mais lenta, o erro permitido é menor
+            para rotações rápidas o erro máximo permitido é maior.
+             */
             let epsilon = (item.multiplier * _model.time_modifier).abs() * 0.0025 + 0.01; // Erro máximo permitido
             if num_voltas_abs.floor() > 0.0 {
                 if (num_voltas_abs.floor() - num_voltas_abs).abs() < epsilon {
@@ -189,7 +115,6 @@ fn update(_app: &App, _model: &mut Model, _update: Update) {
         if vecs_full_rotation == _model.vecs.len() && !_model.points.is_empty() {
             _model.adding = false;
             _model.index_updating = 0;
-            dbg!("\nAdding mode switched off");
         }
 
         _model.points.push(point);
@@ -204,8 +129,10 @@ fn update(_app: &App, _model: &mut Model, _update: Update) {
         _model.index_start = (_model.index_start + 1) % _model.points.len();
     }
 
+    /* Implementação no futuro
     if _app.keys.down.contains(&VirtualKeyCode::Up){ _model.time_modifier += 0.01;}
     if _app.keys.down.contains(&VirtualKeyCode::Down){ _model.time_modifier -= 0.01;}
+    */
 }
 
 fn view(_app: &App, _model: &Model, frame: Frame) {
@@ -232,11 +159,14 @@ fn view(_app: &App, _model: &Model, frame: Frame) {
     }
 
     let fist_point_of_wave = wave_points[0];
+
+    // Draw the wave
     draw.polyline()
         .weight(1.5)
         .points(wave_points)
         .color(RED);
 
+    // Draw the figure
     if _model.adding {
         draw.polyline().weight(4.0).points(_model.points.clone());
     }
@@ -246,6 +176,7 @@ fn view(_app: &App, _model: &Model, frame: Frame) {
         draw.polyline().weight(4.0).points(copy_points);
     }
 
+    // Draw the rotating vectors
     let time = _app.time * _model.time_modifier;
     let mut point: Point2 = pt2(0.0, 0.0);
     for item in &_model.vecs {
@@ -263,6 +194,7 @@ fn view(_app: &App, _model: &Model, frame: Frame) {
         point += new_point;
     }
 
+    // Draw connecting line of wave and rotating vectors
     draw.line()
         .weight(2.0)
         .start(point)
@@ -279,5 +211,6 @@ fn view(_app: &App, _model: &Model, frame: Frame) {
         .radius(5.0)
         .color(DARKGREEN);
 
+    // Update frame
     draw.to_frame(_app, &frame).unwrap();
 }
