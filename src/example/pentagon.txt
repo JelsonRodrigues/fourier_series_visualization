@@ -1,0 +1,2 @@
+size: 25.0, speed: 4.0
+size: 200.0, speed: -1.0
