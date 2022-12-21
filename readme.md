@@ -38,7 +38,7 @@ Exemplo <br>
 
 
 ## ScreenShots
-![Square Wave](.\assets\square_wave.png "Square Wave")
-![Very Beautiful](.\assets\very_beautiful.png "Very Beautiful")
-![Arrow Right](.\assets\arrow_right.png "Arrow Right")
-![Triangular Wave](.\assets\triangular_wave.png "Triangular Wave")
+![Square Wave](assets/square_wave.png "Square Wave")
+![Very Beautiful](assets/very_beautiful.png "Very Beautiful")
+![Arrow Right](assets/arrow_right.png "Arrow Right")
+![Triangular Wave](assets/triangular_wave.png "Triangular Wave")
