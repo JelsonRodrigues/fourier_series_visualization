@@ -1,12 +1,8 @@
 use nannou::prelude::*;
 use nannou::winit::event::VirtualKeyCode;
-
-fn main() {
-    nannou::app(model)
-        .update(update)
-        .simple_window(view)
-        .run();
-}
+use std::str::FromStr;
+use std::env::args;
+use std::process::exit;
 
 struct Item {
     size: Point2,
@@ -22,8 +18,43 @@ struct Model {
     time_modifier: f32,
 }
 
+fn main() {
+
+    if args().collect::<Vec<String>>().len() < 2 {
+        println!("Você deve passar o nome do arquivo com as configurações dos vetores como parâmetro!!!");
+        exit(-1);
+    }
+    nannou::app(model)
+        .update(update)
+        .simple_window(view)
+        .run();
+}
+
+fn read_file(filename : &str) -> Vec<Item> {
+    let mut result:Vec<Item> = Vec::new();
+
+    let file_contents = std::fs::read_to_string(filename)
+        .expect("Erro ao abrir arquivo!!!");
+
+    for line in file_contents.split("\n") {
+         // size: 100.0, speed: 1.0
+        let splitted_line:Vec<&str> = line.split(",").collect();
+        if splitted_line.len() != 2 {
+            eprintln!("Erro ao ler linha do arquivo: {}", line);
+            continue;
+
+        }
+        let size = f32::from_str(splitted_line[0].split(":").collect::<Vec<&str>>()[1].trim()).unwrap();
+        let speed = f32::from_str(splitted_line[1].split(":").collect::<Vec<&str>>()[1].trim()).unwrap();
+
+        result.push(Item {size: pt2(size, 0.0), multiplier: speed});
+    }
+
+    return result;
+}
+
 fn model(_app: &App) -> Model {
-    let mut items: Vec<Item> = Vec::new();
+    let items: Vec<Item>;
 
     /* Very beautiful
     items.push(Item { size : pt2(100.0, 0.0), multiplier : 1.0});
@@ -97,14 +128,8 @@ fn model(_app: &App) -> Model {
     // items.push(Item { size : pt2(50.0,0.0), multiplier : 5.0});
     // items.push(Item { size : pt2(70.0,0.0), multiplier : -7.0});
 
-    let size = 300.0;
-    let speed = 2.5;
-    let n = 15;
-
-    for i in 1..=n {
-        let multiplier = (i * 2) as f32;
-        items.push(Item { size : pt2(size / multiplier, 0.0), multiplier : speed * multiplier});
-    }
+    let arguments:Vec<String> = args().collect();
+    items = read_file(&arguments[1]);
 
     let points = Vec::new();
     Model {
