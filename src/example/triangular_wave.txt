@@ -1,0 +1,6 @@
+size: 100.0, speed: 4.0
+size: 50.0, speed: 8.0
+size: 33.33, speed: 12.0
+size: 25.0, speed: 16.0
+size: 20.0, speed: 20.0
+size: 16.66, speed: 24.0
