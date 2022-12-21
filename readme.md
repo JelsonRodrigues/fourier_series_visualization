@@ -35,10 +35,13 @@ Exemplo <br>
 # Demo
 
 ## GIF
-
+![Cardioid](assets/gifs/cardioid.gif "Cardioid")
+![Very Beautiful](assets/gifs/very_beautiful.gif "Very Beautiful")
+![Triangular Wave](assets/gifs/triangular_wave.gif "Triangular Wave")
+![Square Wave](assets/gifs/square_wave.gif "Square Wave")
 
 ## ScreenShots
-![Square Wave](assets/square_wave.png "Square Wave")
-![Very Beautiful](assets/very_beautiful.png "Very Beautiful")
-![Arrow Right](assets/arrow_right.png "Arrow Right")
-![Triangular Wave](assets/triangular_wave.png "Triangular Wave")
+![Square Wave](assets/images/square_wave.png "Square Wave")
+![Very Beautiful](assets/images/very_beautiful.png "Very Beautiful")
+![Arrow Right](assets/images/arrow_right.png "Arrow Right")
+![Triangular Wave](assets/images/triangular_wave.png "Triangular Wave")
